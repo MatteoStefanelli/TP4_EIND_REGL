@@ -174,6 +174,10 @@ void PI_Regulation(void);
 void SetPWM(float duty);
 float ReadVout(void);
 float ReadIout(void);
+//void PIDMine (float);
+
+#define ZERO 0
+#define TEST 80 
 
 
 /*******************************************************************************

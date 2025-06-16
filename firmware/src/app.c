@@ -1,6 +1,6 @@
 /*******************************************************************************
   MPLAB Harmony Application Source File
-*******************************************************************************/
+ *******************************************************************************/
 
 #include "app.h"
 #include "system_config.h"
@@ -11,7 +11,7 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 
-APP_DATA appData;  // Structure globale d?état de l'application
+APP_DATA appData; // Structure globale d?état de l'application
 
 // *****************************************************************************
 // Section: Application Initialization and State Machine
@@ -32,9 +32,9 @@ void APP_Tasks(void) {
             BLUE_LEDOff();
 
             // Démarrage des modules PWM et timers
-            DRV_OC0_Start();     // PWM OC0
-            DRV_TMR1_Start();    // Timer1 (régulation)
-            DRV_TMR0_Start();    // Timer0 (autres tâches)
+            DRV_OC0_Start(); // PWM OC0
+            DRV_TMR1_Start(); // Timer1 (régulation)
+            DRV_TMR0_Start(); // Timer0 (autres tâches)
 
             appData.state = APP_STATE_WAIT;
             break;
@@ -60,6 +60,7 @@ void APP_Tasks(void) {
 }
 
 // Changement manuel d?état de la machine d'état
+
 void APP_UpdateState(APP_STATES Newstate) {
     appData.state = Newstate;
 }
@@ -67,7 +68,7 @@ void APP_UpdateState(APP_STATES Newstate) {
 // *****************************************************************************
 // Section: Régulation numérique avec protection
 // *****************************************************************************
-/*
+
 // === PARAMÈTRES DU SYSTÈME ===
 #define VREF            3.3f       // Référence ADC
 #define ADC_MAX         1023.0f    // Résolution 10 bits
@@ -86,62 +87,69 @@ void APP_UpdateState(APP_STATES Newstate) {
 #define MAX_VOUT        5.5f       // Tension max (V)
 #define MAX_IOUT        4.8f       // Courant max (A)
 
-static float integrale = 0.0f;     // Terme intégral du régulateur
-static bool faultState = false;   // Drapeau d'erreur
+static float integrale = 0.0f; // Terme intégral du régulateur
+static bool faultState = false; // Drapeau d'erreur
 
 // Réglage du PWM entre 0.0 et 1.0 (rapport cyclique)
+
 void SetPWM(float duty) {
+    // Saturation logique entre 0 et 1
     if (duty < 0.0f) duty = 0.0f;
     if (duty > 1.0f) duty = 1.0f;
 
-    uint32_t period = PLIB_TMR_Period16BitGet(TMR_ID_2); // Période du timer
-    uint32_t compare = (uint32_t)(duty * period);        // Calcul du cycle utile
+    const uint32_t period = 59999; // Timer2 réglé dans Harmony
+    uint32_t compare = (uint32_t) (duty * period); // Valeur de compare
 
-    DRV_OC0_PulseWidthSet(compare); // Appliquer à OC0
+    DRV_OC0_PulseWidthSet(compare); // Application PWM
 }
 
 // Lecture tension de sortie (via ADC sur AN11)
+
 float ReadVout(void) {
-    uint16_t adcVal = DRV_ADC_SamplesRead(1);  // AN11
-    float vin = (adcVal * VREF / ADC_MAX);     // Conversion ADC -> tension
-    return vin * VOUT_GAIN;                    // Application du gain (diviseur)
+    uint16_t adcVal = DRV_ADC_SamplesRead(1); // AN11
+    float vin = (adcVal * VREF / ADC_MAX); // Conversion ADC -> tension
+    return vin * VOUT_GAIN; // Application du gain (diviseur)
 }
 
 // Lecture courant de sortie (via ADC sur AN12)
+
 float ReadIout(void) {
-    uint16_t adcVal = DRV_ADC_SamplesRead(0);  // AN12
-    float vshunt = (adcVal * VREF / ADC_MAX);  // Tension sur shunt
-    return vshunt / SHUNT_GAIN;                // Application gain shunt
+    uint16_t adcVal = DRV_ADC_SamplesRead(0); // AN12
+    float vshunt = (adcVal * VREF / ADC_MAX); // Tension sur shunt
+    return vshunt / SHUNT_GAIN; // Application gain shunt
 }
 
 // Vérification des seuils sécurité (tension + courant)
+
 bool CheckSafety(void) {
     float vout = ReadVout();
     float iout = ReadIout();
 
     if (vout > MAX_VOUT || iout > MAX_IOUT) {
-        RED_LEDOn();           // Indiquer l'erreur
-        SetPWM(0.0f);          // Couper le PWM
-        faultState = true;     // Basculer en erreur
+        RED_LEDOn(); // Indiquer l'erreur
+        SetPWM(0.0f); // Couper le PWM
+        faultState = true; // Basculer en erreur
         return false;
     }
     return true;
 }
 
 // Si l'erreur est passée, redémarrer la régulation
+
 void SafeRecovery(void) {
     if (faultState) {
         float vout = ReadVout();
-        if (vout < TARGET_V * 0.95f) {   // Tension redevenue "safe"
+        if (vout < TARGET_V * 0.95f) { // Tension redevenue "safe"
             faultState = false;
             integrale = 0.0f;
-            SetPWM(0.1f);               // Reprise progressive
-            RED_LEDOff();               // Éteindre alarme
+            SetPWM(0.1f); // Reprise progressive
+            RED_LEDOff(); // Éteindre alarme
         }
     }
 }
 
 // Fonction principale de régulation (appelée par timer1)
+
 void PI_Regulation(void) {
     if (faultState) {
         SafeRecovery(); // Essayer recovery si en erreur
@@ -163,12 +171,46 @@ void PI_Regulation(void) {
 
     SetPWM(output); // Appliquer le PWM régulé
 }
-*/
+
 // Callback appelé par le timer1 (toutes les 100 µs)
+
 void App_Timer1Callback() {
-    //PI_Regulation();
+
+    PI_Regulation();
 }
 
+
+
+
+
+/*************************************************/
+/*************************************************/
+/*************************************************/
+/*****   fonction de transfert en Z de PID   *****/
+
+// Déclaration des constantes du filtre
+#define a1  2.13
+#define a2 -1.83
+#define b0  0.24
+#define b1 -0.24
+// Déclaration des variables statiques pour mémoriser l'état du filtre
+static float x_k_1 = 0.0f; // x(k-1)
+static float y_k_1 = 0.0f; // y(k-1)
+static float y_k_2 = 0.0f; // y(k-2)
+// Fonction du filtre à appeler à chaque nouvel échantillon
+
+float PIDMine(float x_k) {
+    float y_k;
+    // Calcul du filtre
+    y_k = a1 * y_k_1 + a2 * y_k_2 + b0 * x_k + b1 * x_k_1;
+    // Mise à jour des anciennes valeurs pour la prochaine itération
+    x_k_1 = x_k;
+    y_k_2 = y_k_1;
+    y_k_1 = y_k;
+    // Retourner la sortie courante
+    return y_k;
+
+}
 /*******************************************************************************
  End of File
-*******************************************************************************/
+ *******************************************************************************/

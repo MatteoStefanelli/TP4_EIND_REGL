@@ -113,8 +113,6 @@ extern "C" {
 // Section: Driver Configuration
 // *****************************************************************************
 // *****************************************************************************
-#define DRV_I2C_INTERRUPT_MODE                    		true
-
 #define DRV_OC_DRIVER_MODE_STATIC 
 /*** Timer Driver Configuration ***/
 #define DRV_TMR_INTERRUPT_MODE             true
@@ -139,7 +137,7 @@ extern "C" {
 #define DRV_TMR_INTERRUPT_PRIORITY_IDX1     INT_PRIORITY_LEVEL1
 #define DRV_TMR_INTERRUPT_SUB_PRIORITY_IDX1 INT_SUBPRIORITY_LEVEL0
 #define DRV_TMR_CLOCK_SOURCE_IDX1           DRV_TMR_CLKSOURCE_INTERNAL
-#define DRV_TMR_PRESCALE_IDX1               TMR_PRESCALE_VALUE_1
+#define DRV_TMR_PRESCALE_IDX1               TMR_PRESCALE_VALUE_8
 #define DRV_TMR_OPERATION_MODE_IDX1         DRV_TMR_OPERATION_MODE_16_BIT
 
 #define DRV_TMR_ASYNC_WRITE_ENABLE_IDX1     false

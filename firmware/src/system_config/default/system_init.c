@@ -96,8 +96,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // Section: Driver Initialization Data
 // *****************************************************************************
 // *****************************************************************************
-// <editor-fold defaultstate="collapsed" desc="DRV_I2C Initialization Data">
-// </editor-fold>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -146,8 +144,6 @@ void SYS_Initialize ( void* data )
     SYS_DEVCON_JTAGEnable();
 
     /* Initialize Drivers */
-    DRV_I2C0_Initialize();
-
 
     /* Initialize ADC */
     DRV_ADC_Initialize();
