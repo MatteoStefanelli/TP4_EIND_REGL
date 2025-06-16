@@ -5,7 +5,12 @@
         <group>
             <file>file:/C:/microchip/harmony/v2_06/apps/TP4-DCDC-uC/firmware/src/main.c</file>
             <file>file:/C:/microchip/harmony/v2_06/apps/TP4-DCDC-uC/firmware/src/app.c</file>
+            <file>file:/C:/microchip/harmony/v2_06/apps/TP4-DCDC-uC/firmware/src/system_config/default/system_tasks.c</file>
+            <file>file:/C:/microchip/harmony/v2_06/apps/TP4-DCDC-uC/firmware/src/Mc32_I2cUtilCCS.c</file>
             <file>file:/C:/microchip/harmony/v2_06/apps/TP4-DCDC-uC/firmware/src/system_config/default/system_interrupt.c</file>
+            <file>file:/C:/Program%20Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC32MX_DFP/1.5.259/xc32/startup/crt0.S</file>
+            <file>file:/C:/microchip/harmony/v2_06/apps/TP4-DCDC-uC/firmware/TP4-DCDC-uC.X/nbproject/Makefile-default.mk</file>
+            <file>file:/C:/microchip/harmony/v2_06/apps/TP4-DCDC-uC/firmware/src/Mc32_I2cUtilCCS.h</file>
             <file>file:/C:/microchip/harmony/v2_06/apps/TP4-DCDC-uC/firmware/src/app.h</file>
         </group>
     </open-files>

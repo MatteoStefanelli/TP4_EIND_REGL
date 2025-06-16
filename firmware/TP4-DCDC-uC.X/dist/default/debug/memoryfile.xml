@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <project>                                  
-  <executable name="dist/default/production/TP4-DCDC-uC.X.production.elf">                 
+  <executable name="dist/default/debug/TP4-DCDC-uC.X.debug.elf">                 
     <memory name="program">                 
       <units>bytes</units>                 
       <length>66704</length>                 
-      <used>10536</used>                     
-      <free>56168</free>                     
+      <used>10556</used>                     
+      <free>56148</free>                     
     </memory>                              
     <memory name="data">              
       <units>bytes</units>                 
-      <length>16384</length>                 
-      <used>140</used>                     
-      <free>16244</free>                     
+      <length>16896</length>                 
+      <used>1164</used>                     
+      <free>15732</free>                     
     </memory>                              
   </executable>                            
 </project>                                 

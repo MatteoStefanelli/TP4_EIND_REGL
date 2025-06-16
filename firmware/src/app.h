@@ -176,6 +176,12 @@ float ReadVout(void);
 float ReadIout(void);
 //void PIDMine (float);
 
+// === Prototypes INA226 ===
+uint16_t INA226_ReadRegister(uint8_t reg);
+float INA226_GetBusVoltage(void);
+float INA226_GetShuntVoltage(void);
+float INA226_GetCurrent(float Rshunt);
+
 #define ZERO 0
 #define TEST 80 
 

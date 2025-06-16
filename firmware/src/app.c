@@ -30,7 +30,7 @@ void APP_Tasks(void) {
             YELLOW_LEDOff();
             GREEN_LEDOff();
             BLUE_LEDOff();
-
+            
             // Démarrage des modules PWM et timers
             DRV_OC0_Start(); // PWM OC0
             DRV_TMR1_Start(); // Timer1 (régulation)
@@ -48,6 +48,7 @@ void APP_Tasks(void) {
 
         case APP_STATE_SERVICE_TASKS:
         {
+
             // À utiliser pour d'autres traitements si besoin
             break;
         }
@@ -75,8 +76,8 @@ void APP_UpdateState(APP_STATES Newstate) {
 #define TARGET_V        5.0f       // Tension cible de sortie (en V)
 
 // === CONSTANTES PID ===
-#define KP              0.8f       // Gain proportionnel
-#define KI              15.0f      // Gain intégral
+#define KP              1.0f       // Gain proportionnel
+#define KI              40.0f      // Gain intégral
 #define DT              0.0001f    // Période d'échantillonnage (100 µs)
 
 // === GAINS HARDWARE ===
@@ -99,6 +100,7 @@ void SetPWM(float duty) {
 
     const uint32_t period = 59999; // Timer2 réglé dans Harmony
     uint32_t compare = (uint32_t) (duty * period); // Valeur de compare
+
 
     DRV_OC0_PulseWidthSet(compare); // Application PWM
 }
@@ -178,10 +180,6 @@ void App_Timer1Callback() {
 
     PI_Regulation();
 }
-
-
-
-
 
 /*************************************************/
 /*************************************************/
